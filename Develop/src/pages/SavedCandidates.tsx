@@ -1,0 +1,121 @@
+import { useEffect, useState } from "react";
+import type { Candidate } from "../interfaces/Candidate.interface";
+
+const SavedList = (_data: User) => {
+  const [candidatesToSave, setCandidatesToSave] = useState<Candidate[]>([]);
+
+  const removeFromStorage = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    currentlyOnSaveList: boolean,
+    currentlyOnSavedList: boolean,
+    login: string  
+  ) => {
+    e.preventDefault();
+    if (currentlyOnSaveList) {
+      let parsedCandidateToSave: Candidate[] = [];
+      const storedCandidateToSave = localStorage.getItem("CandidatesToSave");
+      if (typeof storedCandidateToSave === "string") {
+        parsedCandidateToSave = JSON.parse(storedCandidateToSave);
+      }
+      const updatedCandidates = parsedCandidateToSave.filter(
+        (candidate) => candidate.login !== login  
+      );
+      setCandidatesToSave(updatedCandidates);
+
+      localStorage.setItem(
+        "CandidatesToSave",
+        JSON.stringify(updatedCandidates)
+      );
+    } else if (currentlyOnSavedList) {
+      let parsedAlreadySavedCandidates: Candidate[] = [];
+      const storedAlreadySavedCandidates = localStorage.getItem(
+        "alreadySavedCandidates"
+      );
+      if (typeof storedAlreadySavedCandidates === "string") {
+        parsedAlreadySavedCandidates = JSON.parse(storedAlreadySavedCandidates);
+      }
+      const updatedSavedCandidates = parsedAlreadySavedCandidates.filter(
+        (candidate) => candidate.login !== login 
+      );
+      localStorage.setItem(
+        "alreadySavedCandidates",
+        JSON.stringify(updatedSavedCandidates)
+      );
+    }
+  };
+
+  useEffect(() => {
+    const storedCandidates = localStorage.getItem("CandidatesToSave");
+    if (storedCandidates) {
+      const parsedCandidatesToSave = JSON.parse(storedCandidates);
+      setCandidatesToSave(parsedCandidatesToSave);
+    }
+  }, []);
+
+  return (
+    <>
+      <h1 className="pageHeader">Potential Candidates</h1>
+
+      {candidatesToSave.length === 0 ? (
+        <h1 style={{ margin: "16px 0" }}>Add candidates to your watchlist.</h1>
+      ) : (
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Avatar</th>
+                <th>Login</th>
+                <th>Followers</th>
+                <th>Id</th>
+                <th>Email</th>
+                <th>URL</th>
+              </tr>
+            </thead>
+            <tbody>
+              {candidatesToSave.map((candidate) => (
+                <tr key={candidate.id}>
+                  <td>
+                    <img
+                      src={candidate.avatar_url}
+                      alt={`${candidate.login}'s avatar`}
+                      style={{ width: "50px", borderRadius: "50%" }}
+                    />
+                  </td>
+                  <td>{candidate.followers_url}</td>
+                  <td>{candidate.id}</td>
+                  <td>{candidate.email || "N/A"}</td>
+                  <td>{candidate.html_url || "N/A"}</td>
+                  <td>
+                    <a
+                      href={candidate.html_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Profile
+                    </a>
+                  </td>
+                  <td>
+                    <button
+                      onClick={(e) =>
+                        removeFromStorage(
+                          e,
+                          true,
+                          false,
+                          candidate.login 
+                        )
+                      }
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default SavedList;
