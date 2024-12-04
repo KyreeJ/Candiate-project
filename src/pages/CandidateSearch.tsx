@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { searchGithub } from '../api/API'; 
 
 import CandidateCard from '../components/CandidateCard';
-import type {Candidate} from '../interfaces/Candidate.interface';
+import type{Candidate} from '../interfaces/Candidate.interface';
 
 
 const CandidateSearch: React.FC = () => {

@@ -1,6 +1,6 @@
 
 
-export default interface Candidate {
+export interface Candidate {
 id: string;
 name:string;
 location:string;
