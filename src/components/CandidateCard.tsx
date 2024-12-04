@@ -1,5 +1,5 @@
 import React from 'react';
-import Candidate from '../interfaces/Candidate.interface'; 
+import type {Candidate} from '../interfaces/Candidate.interface'; 
 
 interface CandidateCardProps {
   candidate: Candidate;
@@ -12,7 +12,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({ candidate, onSave, onSkip
     <div className="candidate-card">
       <div className="card-header">
         <img 
-          src={candidate.profilePicture || candidate.Avatar} 
+          src={candidate.profilePicture || candidate.avatar_url} 
           alt={candidate.name} 
           className="avatar" 
         />
@@ -26,7 +26,7 @@ const CandidateCard: React.FC<CandidateCardProps> = ({ candidate, onSave, onSkip
         <p><strong>Email:</strong> {candidate.email}</p>
         <p><strong>Status:</strong> {candidate.status}</p>
         <p><strong>GitHub:</strong> <a href={candidate.github} target="_blank" rel="noopener noreferrer">{candidate.githubUser}</a></p>
-        <p><strong>Followers:</strong> {candidate.followers}</p>
+        <p><strong>Followers:</strong> {candidate.followers_url}</p>
         <p><strong>Profile URL:</strong> <a href={candidate.URL} target="_blank" rel="noopener noreferrer">View Profile</a></p>
       </div>
 

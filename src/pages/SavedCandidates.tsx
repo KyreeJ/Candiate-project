@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Candidate } from "../interfaces/Candidate.interface";
 
-const SavedList = (_data: User) => {
+const SavedList = () => {
   const [candidatesToSave, setCandidatesToSave] = useState<Candidate[]>([]);
 
   const removeFromStorage = (
